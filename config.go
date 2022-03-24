@@ -64,5 +64,6 @@ func configurar() {
 
 	if newDB {
 		createTables()
+		createFirstUser()
 	}
 }

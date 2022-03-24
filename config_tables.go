@@ -7,7 +7,6 @@ import (
 
 func createTables() {
 	createTableUser()
-	createFirstUser()
 }
 
 func createTableUser() {
