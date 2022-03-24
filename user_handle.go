@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"regexp"
 	"strconv"
 	"time"
 
@@ -103,13 +104,34 @@ func (user *User) CreateNewUser() error {
 }
 
 func (user *User) ValidateName() bool {
-	return len(user.Name) != 0
+	// Começa com letra maiscula seguido por ao menos 2 letras
+	re := regexp.MustCompile(`^[A-Z][a-zA-Z]{2,}.*`)
+	return re.MatchString(user.Name)
 }
 
 func (user *User) ValidateLogin() bool {
-	return len(user.Login) != 0
+	grupos := []string{`[@!#+-]+`, `[0-9]+`, `[A-Z]+`}
+
+	for _, g := range grupos {
+		re := regexp.MustCompile(g)
+		if !re.MatchString(user.Login) {
+			return false
+		}
+	}
+
+	return len(user.Login) > 4
 }
 
+// ValidatePassword deve ser maior que
 func (user *User) ValidatePassword() bool {
-	return len(user.Password) != 0
+	grupos := []string{`[@!#+-]+`, `[0-9]+`, `[A-Z]+`}
+
+	for _, g := range grupos {
+		re := regexp.MustCompile(g)
+		if !re.MatchString(user.Password) {
+			return false
+		}
+	}
+
+	return len(user.Password) > 4
 }
